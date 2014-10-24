@@ -1,0 +1,17 @@
+{
+    "require": {
+        "aura/sql": "2.1.*",
+        "monolog/monolog": "1.*",
+        "php": ">=5.4.0",
+        "robmorgan/phinx": "0.3.*",
+        "slim/slim": "2.*",
+        "slimcontroller/slimcontroller": "0.4.*",
+        "vlucas/phpdotenv": "1.0.*@dev"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "Lonestar\\": "src/Lonestar"
+        }
+    }
+}
