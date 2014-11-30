@@ -24,6 +24,7 @@ class Speaker extends \SlimController\SlimController
 
     public function createAction()
     {
+        throw new \Exception('Not currently impelmented');
         $data = $this->request()->post();
         $db = $this->app->db;
 
