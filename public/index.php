@@ -28,7 +28,7 @@ $app->container->singleton('db', function() {
     return new ExtendedPdo(
         "mysql:host={$_SERVER['PHINX_API_LONESTARPHP_DB_HOST']};dbname={$_SERVER['PHINX_API_LONESTARPHP_DB_NAME']}",
         $_SERVER['PHINX_API_LONESTARPHP_DB_USER'],
-        $_SERVER['PHINX_API_LONESTARPHP_DB_PASSWORD']
+        $_SERVER['PHINX_API_LONESTARPHP_DB_PASS']
     );
 });
 
