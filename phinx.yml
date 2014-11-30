@@ -5,9 +5,16 @@ environments:
     default_migration_table: phinxlog
     default_database: local
     local:
-        adapter: %%PHINX_DB_TYPE%%
-        host: %%PHINX_DB_HOST%%
-        name: %%PHINX_DB_NAME%%
-        user: %%PHINX_DB_USER%%
-        pass: %%PHINX_DB_PASS%%
+        adapter: %%PHINX_API_LONESTARPHP_DB_TYPE%%
+        host: %%PHINX_API_LONESTARPHP_DB_HOST%%
+        name: %%PHINX_API_LONESTARPHP_DB_NAME%%
+        user: %%PHINX_API_LONESTARPHP_DB_USER%%
+        pass: %%PHINX_API_LONESTARPHP_DB_PASS%%
+        charset: utf8
+    production:
+        adapter: %%PHINX_API_LONESTARPHP_DB_TYPE%%
+        host: %%PHINX_API_LONESTARPHP_DB_HOST%%
+        name: %%PHINX_API_LONESTARPHP_DB_NAME%%
+        user: %%PHINX_API_LONESTARPHP_DB_USER%%
+        pass: %%PHINX_API_LONESTARPHP_DB_PASS%%
         charset: utf8
