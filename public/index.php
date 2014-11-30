@@ -26,9 +26,9 @@ $app->container->singleton('log', function () {
 
 $app->container->singleton('db', function() {
     return new ExtendedPdo(
-        "mysql:host={$_ENV['PHINX_API_LONESTARPHP_DB_HOST']};dbname={$_ENV['PHINX_API_LONESTARPHP_DB_NAME']}",
-        $_ENV['PHINX_API_LONESTARPHP_DB_USER'],
-        $_ENV['PHINX_API_LONESTARPHP_DB_PASSWORD']
+        "mysql:host={$_SERVER['PHINX_API_LONESTARPHP_DB_HOST']};dbname={$_SERVER['PHINX_API_LONESTARPHP_DB_NAME']}",
+        $_SERVER['PHINX_API_LONESTARPHP_DB_USER'],
+        $_SERVER['PHINX_API_LONESTARPHP_DB_PASSWORD']
     );
 });
 
