@@ -14,7 +14,10 @@ class Speaker extends \SlimController\SlimController
 
     public function showAction($id)
     {
-        $this->render(200, ['message' => 'show']);
+        $db = $this->app->db;
+
+        $results = $db->fetchAll("SELECT * FROM speakers WHERE id = :id", ['id' => (int) $id]);
+        $this->render(200, $results);
     }
 
     public function talksAction($id)
