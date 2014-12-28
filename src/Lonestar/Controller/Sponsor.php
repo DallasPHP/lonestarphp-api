@@ -22,9 +22,11 @@ class Sponsor extends \SlimController\SlimController
      */
     public function indexAction()
     {
-        $db = $this->app->db;
+        $sponsorMapper = $this->app->spot->mapper('Lonestar\Entity\Sponsor');
 
-        $results = $db->fetchAll("SELECT * FROM sponsors ORDER BY sponsor_level DESC, created_at ASC");
+        $results = $sponsorMapper->all()
+            ->order(['sponsor_level' => 'DESC', 'created_at' => 'ASC'])
+            ->toArray();
 
         $sponsors = array_map(function($row) {
             $row['sponsor_level'] = $this->getSponsorshipName($row['sponsor_level']);
@@ -41,9 +43,12 @@ class Sponsor extends \SlimController\SlimController
      */
     public function showAction($id)
     {
-        $db = $this->app->db;
+        $sponsorMapper = $this->app->spot->mapper('Lonestar\Entity\Sponsor');
 
-        $results = $db->fetchAll("SELECT * FROM sponsors WHERE id = :id", ['id' => (int) $id]);
+        $results = $sponsorMapper->all()
+            ->where(['id' => (int) $id])
+            ->toArray();
+
         $this->render(200, $results);
     }
 

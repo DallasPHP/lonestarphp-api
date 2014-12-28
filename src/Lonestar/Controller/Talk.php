@@ -6,16 +6,38 @@ class Talk extends \SlimController\SlimController
 {
     public function indexAction()
     {
-        $this->render(200, ['message' => 'index']);
+        $talkMapper = $this->app->spot->mapper('Lonestar\Entity\Talk');
+        $talks = $talkMapper->all()
+            ->with(['speaker']);
+
+        $results = [];
+        foreach ($talks as $id => $talk) {
+            $results[$id] = $talk->toArray();
+            $results[$id]['speaker'] = $talk->speaker->toArray();
+        }
+
+        $this->render(200, $results);
     }
 
     public function showAction($id)
     {
-        $this->render(200, ['message' => 'show']);
+        $talkMapper = $this->app->spot->mapper('Lonestar\Entity\Talk');
+        $talk = $talkMapper->all()
+            ->where(['id' => (int) $id])
+            ->with(['speaker'])
+            ->first();
+
+        $this->render(200, $talk->toArray());
     }
 
     public function speakerAction($id)
     {
-        $this->render(200, ['message' => 'speaker']);
+        $talkMapper = $this->app->spot->mapper('Lonestar\Entity\Talk');
+        $talk = $talkMapper->all()
+            ->where(['id' => (int) $id])
+            ->with(['speaker'])
+            ->first();
+
+        $this->render(200, $talk->speaker->toArray());
     }
 }

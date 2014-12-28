@@ -4,9 +4,15 @@ require '../vendor/autoload.php';
 use \Aura\Sql\ExtendedPdo;
 use \Monolog\Logger;
 use \Lonestar\View\Json;
+use Spot\Config as SpotConfig;
+use Spot\Locator as SpotLocator;
 
 define('APP_PATH', dirname(__DIR__));
-Dotenv::load(APP_PATH);
+define('APP_ENV', isset($_SERVER['APP_ENV']) ? $_SERVER['APP_ENV'] : 'development');
+
+if (APP_ENV !== 'production') {
+    Dotenv::load(APP_PATH);
+}
 
 // Prepare app
 $app = New \SlimController\Slim(array(
@@ -24,12 +30,18 @@ $app->container->singleton('log', function () {
     return $log;
 });
 
-$app->container->singleton('db', function() {
-    return new ExtendedPdo(
-        "mysql:host={$_SERVER['PHINX_API_LONESTARPHP_DB_HOST']};dbname={$_SERVER['PHINX_API_LONESTARPHP_DB_NAME']}",
-        $_SERVER['PHINX_API_LONESTARPHP_DB_USER'],
-        $_SERVER['PHINX_API_LONESTARPHP_DB_PASS']
-    );
+$app->container->singleton('spot', function() {
+    $config = new SpotConfig();
+
+    $config->addConnection('mysql', [
+        'dbname' => $_SERVER['PHINX_API_LONESTARPHP_DB_NAME'],
+        'user' => $_SERVER['PHINX_API_LONESTARPHP_DB_USER'],
+        'password' => $_SERVER['PHINX_API_LONESTARPHP_DB_PASS'],
+        'host' => $_SERVER['PHINX_API_LONESTARPHP_DB_HOST'],
+        'driver' => 'pdo_mysql'
+    ]);
+
+    return new SpotLocator($config);
 });
 
 $app->view(new Json);

@@ -6,43 +6,42 @@ class Speaker extends \SlimController\SlimController
 {
     public function indexAction()
     {
-        $db = $this->app->db;
+        $speakerMapper = $this->app->spot->mapper('Lonestar\Entity\Speaker');
+        $speakers = $speakerMapper->all()
+            ->with(['talks']);
 
-        $results = $db->fetchAll("SELECT * FROM speakers");
+        $results = [];
+        foreach ($speakers as $id => $speaker) {
+            $results[$id] = $speaker->toArray();
+            $results[$id]['talks'] = $speaker->talks->toArray();
+        }
+
         $this->render(200, $results);
     }
 
     public function showAction($id)
     {
-        $db = $this->app->db;
+        $speakerMapper = $this->app->spot->mapper('Lonestar\Entity\Speaker');
 
-        $results = $db->fetchAll("SELECT * FROM speakers WHERE id = :id", ['id' => (int) $id]);
+        $results = $speakerMapper->all()
+            ->where(['id' => (int) $id])
+            ->toArray();
+
         $this->render(200, $results);
     }
 
     public function talksAction($id)
     {
-        $this->render(200, ['message' => 'talks']);
+        $talkMapper = $this->app->spot->mapper('Lonestar\Entity\Talk');
+        $results = $talkMapper->all()
+            ->where(['speaker_id' => (int) $id])
+            ->toArray();
+
+        $this->render(200, $results);
     }
 
     public function createAction()
     {
         throw new \Exception('Not currently impelmented');
-        $data = $this->request()->post();
-        $db = $this->app->db;
-
-        $query = "INSERT INTO speakers (first_name, last_name) VALUES (:first_name, :last_name)";
-        $db->perform($query, $data);
-
-        $id = $db->lastInsertId();
-
-        $this->app->response()->header(
-            'Location',
-            $this->app->urlFor(
-                'Speaker:show',
-                ['id' => $id]
-            )
-        );
-        $this->render(202, ['message' => 'Created Speaker']);
     }
 }
