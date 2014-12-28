@@ -21,7 +21,7 @@ class Json extends \Slim\View
         if ($jsonpCallback !== null){
             $app->response()->body($jsonpCallback . '(' . json_encode($data) . ')');
         } else {
-            $app->response()->body(json_encode($data));
+            $app->response()->body(json_encode($data, JSON_PARTIAL_OUTPUT_ON_ERROR));
         }
 
         $app->stop();
