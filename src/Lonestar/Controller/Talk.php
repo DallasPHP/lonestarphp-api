@@ -8,7 +8,8 @@ class Talk extends \SlimController\SlimController
     {
         $talkMapper = $this->app->spot->mapper('Lonestar\Entity\Talk');
         $talks = $talkMapper->all()
-            ->with(['speaker']);
+            ->with(['speaker'])
+            ->order(['title' => 'ASC']);
 
         $results = [];
         foreach ($talks as $id => $talk) {
