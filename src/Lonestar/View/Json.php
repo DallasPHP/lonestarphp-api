@@ -15,6 +15,7 @@ class Json extends \Slim\View
 
         $app->response()->setStatus($status);
         $app->response()->header('Content-Type', 'application/json');
+        $app->response()->header('Access-Control-Allow-Origin', '*');
 
         $jsonpCallback = $app->request()->get('callback', null);
 
