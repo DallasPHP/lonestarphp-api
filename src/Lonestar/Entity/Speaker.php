@@ -26,7 +26,7 @@ class Speaker extends Entity
     public static function relations(\Spot\MapperInterface $mapper, \Spot\EntityInterface $entity)
     {
         return [
-            'talks' => $mapper->hasMany($entity, 'Lonestar\Entity\Talk', 'speaker_id'),
+            'talks' => $mapper->hasManyThrough($entity, 'Lonestar\Entity\Talk', 'Lonestar\Entity\SpeakerTalk', 'talk_id', 'speaker_id'),
         ];
     }
 }

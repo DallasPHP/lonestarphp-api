@@ -4,18 +4,16 @@ namespace Lonestar\Entity;
 
 use Spot\Entity;
 
-class Talk extends Entity
+class SpeakerTalk extends Entity
 {
-    protected static $table = 'talks';
+    protected static $table = 'speaker_talks';
 
     public static function fields()
     {
         return [
             'id' => ['type' => 'integer', 'autoincrement' => true, 'primary' => true],
-            'title' => ['type' => 'string', 'length' => 255, 'required' => true],
-            'abstract' => ['type' => 'text'],
-            'category' => ['type' => 'string', 'length' => 40],
-            'speaker_id' => ['type' => 'integer', 'required' => true],
+            'speaker_id' => ['type' => 'integer', 'required' => true, 'unique' => 'speaker_talk'],
+            'talk_id' => ['type' => 'integer', 'required' => true, 'unique' => 'speaker_talk'],
             'created_at' => ['type' => 'datetime', 'value' => new \DateTime()],
             'updated_at' => ['type' => 'datetime', 'value' => new \DateTime()]
         ];
@@ -24,7 +22,8 @@ class Talk extends Entity
     public static function relations(\Spot\MapperInterface $mapper, \Spot\EntityInterface $entity)
     {
         return [
-            'speakers' => $mapper->hasManyThrough($entity, 'Lonestar\Entity\Speaker', 'Lonestar\Entity\SpeakerTalk', 'speaker_id', 'talk_id'),
+            'speaker' => $mapper->belongsTo($entity, 'Lonestar\Entity\Speaker', 'speaker_id'),
+            'talk' => $mapper->belongsTo($entity, 'Lonestar\Entity\Talk', 'talk_id'),
         ];
     }
 }

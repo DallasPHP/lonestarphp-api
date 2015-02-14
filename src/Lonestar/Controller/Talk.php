@@ -8,13 +8,13 @@ class Talk extends \SlimController\SlimController
     {
         $talkMapper = $this->app->spot->mapper('Lonestar\Entity\Talk');
         $talks = $talkMapper->all()
-            ->with(['speaker'])
+            ->with(['speakers'])
             ->order(['title' => 'ASC']);
 
         $results = [];
         foreach ($talks as $id => $talk) {
             $results[$id] = $talk->toArray();
-            $results[$id]['speaker'] = $talk->speaker->toArray();
+            $results[$id]['speakers'] = $talk->speakers->toArray();
         }
 
         $this->render(200, $results);
@@ -25,7 +25,7 @@ class Talk extends \SlimController\SlimController
         $talkMapper = $this->app->spot->mapper('Lonestar\Entity\Talk');
         $talk = $talkMapper->all()
             ->where(['id' => (int) $id])
-            ->with(['speaker'])
+            ->with(['speakers'])
             ->first();
 
         $this->render(200, $talk->toArray());
@@ -36,9 +36,9 @@ class Talk extends \SlimController\SlimController
         $talkMapper = $this->app->spot->mapper('Lonestar\Entity\Talk');
         $talk = $talkMapper->all()
             ->where(['id' => (int) $id])
-            ->with(['speaker'])
+            ->with(['speakers'])
             ->first();
 
-        $this->render(200, $talk->speaker->toArray());
+        $this->render(200, $talk->speakers->toArray());
     }
 }
