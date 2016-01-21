@@ -1,6 +1,8 @@
 <?php
 require '../vendor/autoload.php';
 
+date_default_timezone_set('America/Chicago');
+
 use \Aura\Sql\ExtendedPdo;
 use \Monolog\Logger;
 use \Lonestar\View\Json;
@@ -53,7 +55,7 @@ $app->addRoutes([
     '/speakers/:id/talks' => ['get' => 'Speaker:talks'],
     '/talks' => ['get' => 'Talk:index'],
     '/talks/:id' => ['get' => 'Talk:show'],
-    '/talks/:id/speaker' => ['get' => 'Talk:speaker'],
+    '/talks/:id/speakers' => ['get' => 'Talk:speakers'],
     '/sponsors' => ['get' => 'Sponsor:index'],
     '/sponsors/:id' => ['get' => 'Sponsor:show'],
 ]);
