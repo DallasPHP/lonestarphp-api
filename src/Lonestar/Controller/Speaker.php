@@ -2,43 +2,56 @@
 
 namespace Lonestar\Controller;
 
+use League\Fractal;
+use Lonestar\Serializer\NoRootArray as NoRootArraySerializer;
+use Lonestar\Transformer\Talk as TalkTransformer;
+use Lonestar\Transformer\Speaker as SpeakerTransformer;
+
 class Speaker extends \SlimController\SlimController
 {
     public function indexAction()
     {
+        $manager = (new Fractal\Manager)
+            ->setSerializer(new NoRootArraySerializer)
+            ->parseIncludes(['talks']);
+
         $speakerMapper = $this->app->spot->mapper('Lonestar\Entity\Speaker');
-        $speakers = $speakerMapper->all()
+        $results = $speakerMapper->all()
             ->with(['talks'])
             ->order(['last_name' => 'ASC']);
+        $speakers = new Fractal\Resource\Collection($results, new SpeakerTransformer);
 
-        $results = [];
-        foreach ($speakers as $id => $speaker) {
-            $results[$id] = $speaker->toArray();
-            $results[$id]['talks'] = $speaker->talks->toArray();
-        }
-
-        $this->render(200, $results);
+        $this->render(200, $manager->createData($speakers)->toArray());
     }
 
     public function showAction($id)
     {
+        $manager = (new Fractal\Manager)
+            ->setSerializer(new NoRootArraySerializer)
+            ->parseIncludes(['talks']);
+
         $speakerMapper = $this->app->spot->mapper('Lonestar\Entity\Speaker');
 
         $results = $speakerMapper->all()
             ->where(['id' => (int) $id])
-            ->toArray();
+            ->first();
+        $speaker = new Fractal\Resource\Item($results, new SpeakerTransformer);
 
-        $this->render(200, $results);
+        $this->render(200, $manager->createData($speaker)->toArray());
     }
 
     public function talksAction($id)
     {
-        $talkMapper = $this->app->spot->mapper('Lonestar\Entity\Talk');
-        $results = $talkMapper->all()
-            ->where(['speaker_id' => (int) $id])
-            ->toArray();
+        $manager = (new Fractal\Manager)
+            ->setSerializer(new NoRootArraySerializer);
 
-        $this->render(200, $results);
+        $talkMapper = $this->app->spot->mapper('Lonestar\Entity\Speaker');
+        $speaker = $talkMapper->all()
+            ->where(['id' => (int) $id])
+            ->first();
+        $talks = new Fractal\Resource\Collection($speaker->talks, new TalkTransformer);
+
+        $this->render(200, $manager->createData($talks)->toArray());
     }
 
     public function createAction()

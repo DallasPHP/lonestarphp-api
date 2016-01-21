@@ -6,7 +6,8 @@
         "slim/slim": "2.*",
         "slimcontroller/slimcontroller": "0.4.*",
         "vlucas/phpdotenv": "1.0.*@dev",
-        "vlucas/spot2": "~2.1"
+        "vlucas/spot2": "~2.1",
+        "league/fractal": "^0.13.0"
     },
 
     "autoload": {
