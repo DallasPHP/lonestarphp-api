@@ -10,9 +10,12 @@ class AddTalkSlugToTalks extends AbstractMigration
     public function up()
     {
         // Add new slug column
-        $this->table('talks')
-            ->addColumn('slug', 'string')
+        $talkTable = $this->table('talks');
+
+        if (!$talkTable->hasColumn('slug')) {
+            $talkTable->addColumn('slug', 'string')
             ->save();
+        }
 
         $talks = $this->fetchAll('SELECT * FROM talks');
 
