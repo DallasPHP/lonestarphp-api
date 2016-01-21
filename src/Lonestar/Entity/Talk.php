@@ -15,9 +15,10 @@ class Talk extends Entity
             'title' => ['type' => 'string', 'length' => 255, 'required' => true],
             'abstract' => ['type' => 'text'],
             'category' => ['type' => 'string', 'length' => 40],
+            'level' => ['type' => 'string', 'length' => 20],
             'speaker_id' => ['type' => 'integer', 'required' => true],
             'created_at' => ['type' => 'datetime', 'value' => new \DateTime()],
-            'updated_at' => ['type' => 'datetime', 'value' => new \DateTime()]
+            'updated_at' => ['type' => 'datetime', 'value' => new \DateTime()],
         ];
     }
 
